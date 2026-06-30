@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="380" viewBox="0 0 760 380">
+  <g font-family="DejaVu Sans, sans-serif">
+    <line x1="226" y1="190" x2="268" y2="190" stroke="#64748b" stroke-width="3"/>
+    <polygon points="266,184 277,190 266,196" fill="#64748b"/>
+    <line x1="440" y1="152" x2="550" y2="124" stroke="#64748b" stroke-width="3"/>
+    <polygon points="557,121 546,118 549,129" fill="#64748b"/>
+    <line x1="440" y1="228" x2="550" y2="256" stroke="#64748b" stroke-width="3"/>
+    <polygon points="557,259 546,262 549,251" fill="#64748b"/>
+
+    <rect x="30" y="156" width="196" height="68" rx="13" fill="none" stroke="#3b82f6" stroke-width="3.6"/>
+    <text x="128" y="197" text-anchor="middle" font-size="21" font-weight="bold" fill="#3b82f6">Agent proposes</text>
+
+    <polygon points="380,116 486,190 380,264 274,190" fill="none" stroke="#d97706" stroke-width="3.8"/>
+    <text x="380" y="198" text-anchor="middle" font-size="22" font-weight="bold" fill="#d97706">Human gate</text>
+
+    <rect x="556" y="90" width="178" height="60" rx="12" fill="none" stroke="#16a34a" stroke-width="3.6"/>
+    <text x="645" y="128" text-anchor="middle" font-size="23" font-weight="bold" fill="#16a34a">Execute</text>
+
+    <rect x="556" y="230" width="178" height="60" rx="12" fill="none" stroke="#dc2626" stroke-width="3.6"/>
+    <text x="645" y="268" text-anchor="middle" font-size="23" font-weight="bold" fill="#dc2626">Block</text>
+
+    <text x="496" y="116" text-anchor="middle" font-size="18" font-weight="bold" fill="#6b7280">Approve</text>
+    <text x="496" y="272" text-anchor="middle" font-size="18" font-weight="bold" fill="#6b7280">Deny</text>
+
+    <text x="380" y="352" text-anchor="middle" font-size="25" font-weight="bold" fill="#6b7280">Gate the irreversible</text>
+  </g>
+</svg>

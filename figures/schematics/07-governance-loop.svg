@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="290" viewBox="0 0 760 290">
+  <g font-family="DejaVu Sans, sans-serif">
+    <path d="M656,102 L656,186 L92,186 L92,112" fill="none" stroke="#64748b" stroke-width="3"/>
+    <polygon points="85,114 92,102 99,114" fill="#64748b"/>
+
+    <line x1="168" y1="69" x2="198" y2="69" stroke="#64748b" stroke-width="3"/>
+    <polygon points="197,62 207,69 197,76" fill="#64748b"/>
+    <line x1="356" y1="69" x2="386" y2="69" stroke="#64748b" stroke-width="3"/>
+    <polygon points="385,62 395,69 385,76" fill="#64748b"/>
+    <line x1="544" y1="69" x2="574" y2="69" stroke="#64748b" stroke-width="3"/>
+    <polygon points="573,62 583,69 573,76" fill="#64748b"/>
+
+    <rect x="16" y="36" width="152" height="66" rx="14" fill="none" stroke="#3b82f6" stroke-width="3.6"/>
+    <text x="92" y="77" text-anchor="middle" font-size="23" font-weight="bold" fill="#3b82f6">Govern</text>
+    <rect x="204" y="36" width="152" height="66" rx="14" fill="none" stroke="#3b82f6" stroke-width="3.6"/>
+    <text x="280" y="77" text-anchor="middle" font-size="23" font-weight="bold" fill="#3b82f6">Map</text>
+    <rect x="392" y="36" width="152" height="66" rx="14" fill="none" stroke="#3b82f6" stroke-width="3.6"/>
+    <text x="468" y="77" text-anchor="middle" font-size="23" font-weight="bold" fill="#3b82f6">Measure</text>
+    <rect x="580" y="36" width="152" height="66" rx="14" fill="none" stroke="#3b82f6" stroke-width="3.6"/>
+    <text x="656" y="77" text-anchor="middle" font-size="23" font-weight="bold" fill="#3b82f6">Manage</text>
+
+    <text x="380" y="252" text-anchor="middle" font-size="25" font-weight="bold" fill="#6b7280">A loop, not a binder</text>
+  </g>
+</svg>
