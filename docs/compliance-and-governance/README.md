@@ -8,41 +8,34 @@ Of the seven pillars, this is the one a regulator, an auditor, or a court actual
 limits, guardrails, observability, identity, rollback — are the *controls*; governance is the **evidence
 that those controls existed, were chosen on purpose, and were working** when it mattered. It is written
 for the person who signs the go-live and owns the fallout: they can already build the agent; the gap is
-defending it the morning after. This page is meant to be read on its own — by the end you should
-understand why governance is where agent projects get caught, the single loop every framework reduces to,
-how one classification decision sizes your whole obligation, how the major frameworks divide the labour,
-why an *agent* raises the bar over a chatbot, and what "in control" looks like once it has to become
-something you can hand to an auditor. The [deep-dives](#going-deeper) then walk the hardest parts in
-detail.
+defending it the morning after. The [deep-dives](#going-deeper) walk the hardest parts in detail.
 
 ---
 
-## Why this is the pillar that gets tested
+## Where this breaks in production
 
 Compliance for agents is not about intentions; it is about **artifacts**. No auditor accepts "we have
-guardrails" — they accept the prompt-injection test report, the model-inventory entry, the six months of
+guardrails" — they accept the prompt-injection test report, the model-inventory entry, six months of
 retained logs, the dated and signed impact assessment. The recurring trap: the system works in
-production, the controls were never built as *evidence*, and the proof that would have passed an audit was
-never produced.
+production, the controls were never built as *evidence*, and the proof that would have passed an audit
+was never produced.
 
-Several of the failures documented in this repository are governance failures, not model failures. Air Canada's
-support bot invented a refund policy; a tribunal held that **the operator owns the output** and rejected
-"the chatbot is a separate legal entity" as a defence — the airline paid
+Several of the failures documented in this repository are governance failures, not model failures. Air
+Canada's support bot invented a refund policy; a tribunal held that **the operator owns the output** and
+rejected "the chatbot is a separate legal entity" as a defence — the airline paid
 ([*Moffatt v. Air Canada*](../case-studies/air-canada-chatbot.md)). New York City's official MyCity bot
 told business owners to break the law and was **left online** afterward, because no review gate or
-accountable owner was positioned to pull it ([NYC MyCity](../case-studies/nyc-mycity-chatbot.md)). When an
-agent [deleted a production database at Replit](../case-studies/replit-database-deletion.md), the absence
-of a trustworthy trace and rollback path turned a mistake into a crisis. In each, the model did roughly
-what models do; what was missing was the scaffolding around it — grounding, a review gate, a named owner,
-a record.
+accountable owner was positioned to pull it ([NYC MyCity](../case-studies/nyc-mycity-chatbot.md)). When
+an agent [deleted a production database at Replit](../case-studies/replit-database-deletion.md), the
+absence of a trustworthy trace and rollback path turned a mistake into a crisis. In each, what was
+missing was the scaffolding — grounding, a review gate, a named owner, a record.
 
-The regulatory direction of travel runs one way: toward *you must be able to demonstrate control*. The EU
-AI Act turns that into binding law backed by fines up to **€35 million or 7% of global annual turnover**
-([Regulation (EU) 2024/1689](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng), Art. 99). And the
-pressure rises with the deployment curve — reported AI incidents reached a ballpark **233 in 2024, up
-~56% year-on-year** ([Stanford HAI AI Index 2025](https://hai.stanford.edu/ai-index/2025-ai-index-report/responsible-ai)).
-That is the environment in which "we couldn't reconstruct what happened" stops being an awkward admission
-and becomes a liability.
+The regulatory direction runs one way: toward *you must be able to demonstrate control*. The EU AI Act
+turns that into binding law backed by fines up to **€35 million or 7% of global annual turnover**
+([Regulation (EU) 2024/1689](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng), Art. 99), and reported
+AI incidents are climbing fast — a ballpark **233 in 2024, up ~56% year-on-year**
+([Stanford HAI AI Index 2025](https://hai.stanford.edu/ai-index/2025-ai-index-report/responsible-ai)).
+"We couldn't reconstruct what happened" stops being an awkward admission and becomes a liability.
 
 ## Governance is a loop, not a binder
 
@@ -51,11 +44,10 @@ filed. Every framework worth using describes the same *continuous loop* instead:
 assess the risk → operate with controls → keep the evidence → review and improve**, then round again. The
 names differ; the loop does not.
 
-That loop is exactly why governance is *infrastructure* and not paperwork: like observability or rollback,
-it has to run while the agent runs. An agent's risk surface moves — a new tool, a changed prompt, a model
-upgrade each shift what it can do and what can go wrong — so a one-time assessment is stale the first time
-the system changes. **Governance that does not re-enter the loop on change is governance in name only**,
-and "we assessed it at launch" is the answer that ages worst in an audit.
+That loop is why governance is *infrastructure* and not paperwork: like observability or rollback, it has
+to run while the agent runs. An agent's risk surface moves — a new tool, a changed prompt, a model upgrade
+each shift what it can do — so a one-time assessment is stale the first time the system changes.
+**Governance that does not re-enter the loop on change is governance in name only.**
 
 <p align="center">
   <img src="../../figures/schematics/07-governance-loop.svg" alt="Governance is a continuous loop — Govern, Map, Measure, Manage — not a one-time binder." width="420">
@@ -64,26 +56,26 @@ and "we assessed it at launch" is the answer that ages worst in an audit.
 ## Classify first — your risk tier sets the bill
 
 Before any control, one classification decides almost everything: **which risk tier your system falls
-into.** The EU AI Act sorts AI by potential to harm, and the obligations scale steeply with the tier
+into.** The EU AI Act sorts AI by potential to harm, and obligations scale steeply with the tier
 ([Regulation (EU) 2024/1689](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng)):
 
-- **Unacceptable** — banned practices (e.g. social scoring, most real-time biometric identification); you
-  do not deploy these at all (Art. 5).
+- **Unacceptable** — banned practices (e.g. social scoring, most real-time biometric identification); do
+  not deploy these at all (Art. 5).
 - **High-risk** — systems in regulated products or the Annex III areas (hiring, credit, biometrics,
-  essential services, education, justice); these carry the full load — risk management, data governance,
-  technical documentation, logging by design, human oversight, accuracy and robustness (Arts. 9–17).
-- **Limited** — systems that interact with people or generate content; you owe **transparency**: tell
-  users they are dealing with AI, and label AI-generated content (Art. 50).
+  essential services, education, justice); the full load — risk management, data governance, technical
+  documentation, logging by design, human oversight, accuracy/robustness (Arts. 9–17).
+- **Limited** — systems that interact with people or generate content; owe **transparency**: tell users
+  they're dealing with AI, label AI-generated content (Art. 50).
 - **Minimal** — everything else; no specific obligations.
 
 **Classifying honestly is the first governance act.** The same model carries wildly different legal weight
 depending on where you wire it: an agent that screens job applicants is high-risk; one that drafts your
-own meeting notes is minimal. Most agents land in *limited* or *minimal* — but the few that touch an
-Annex III area inherit a heavy, slow-to-retrofit obligation set, and guessing the tier is not a defence.
-A separate track governs **general-purpose AI models** themselves (Art. 53: technical documentation, a
-copyright policy, a training-data summary), with the official **[GPAI Code of Practice](https://digital-strategy.ec.europa.eu/en/policies/contents-code-gpai)**
-as the voluntary route to showing compliance — relevant if you *provide* a model, not only if you deploy
-one.
+own meeting notes is minimal. Most agents land in *limited* or *minimal*, but the few that touch an Annex
+III area inherit a heavy, slow-to-retrofit obligation set, and guessing the tier is not a defence. A
+separate track governs **general-purpose AI models** themselves (Art. 53: technical documentation,
+copyright policy, training-data summary), with the official
+**[GPAI Code of Practice](https://digital-strategy.ec.europa.eu/en/policies/contents-code-gpai)** as the
+voluntary route to showing compliance — relevant if you *provide* a model, not only if you deploy one.
 
 ## The framework stack — three jobs, not three choices
 
@@ -97,25 +89,24 @@ You do not pick between the major frameworks; they **stack**, each doing a diffe
 
 They interlock: NIST gives you the verbs (auditors increasingly ask "*which* AI RMF function does this
 control satisfy?"), ISO 42001 gives you the certifiable management system and its **Statement of
-Applicability** — the document justifying which controls you implemented and which you excluded — and the
-EU AI Act makes a subset legally mandatory. Implement one well and you have most of the next.
+Applicability** — justifying which controls you implemented and which you excluded — and the EU AI Act
+makes a subset legally mandatory. Implement one well and you have most of the next.
 
 Sitting across all three is a security risk taxonomy. OWASP ranks **excessive agency** and **unbounded
 consumption** among the top LLM risks ([OWASP Top 10 for LLM Applications](https://genai.owasp.org/llm-top-10/)),
 and now publishes a dedicated **[Top 10 for Agentic Applications](https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/)**
-for agent-specific threats (goal hijacking, tool misuse, identity and privilege abuse, rogue agents).
-These are the threat lists customers expect you to have tested against — and the test reports are
-governance evidence.
+for agent-specific threats (goal hijacking, tool misuse, identity and privilege abuse, rogue agents) —
+the threat lists customers expect you to have tested against, and the test reports are governance
+evidence.
 
-One caution on timelines: **the EU AI Act's own dates are in motion.** The headline schedule runs from
-entry into force (1 Aug 2024) through prohibited practices (Feb 2025), GPAI obligations (Aug 2025), and
-high-risk obligations (2 Aug 2026). But a 2026 "Digital Omnibus" simplification package — on which Council
-and Parliament reached a provisional political agreement on **7 May 2026** — would defer the stand-alone
-high-risk (Annex III) obligations to **2 December 2027**
+One caution on timelines: **the EU AI Act's own dates are in motion.** The headline schedule runs entry
+into force (1 Aug 2024) through prohibited practices (Feb 2025), GPAI obligations (Aug 2025), and
+high-risk obligations (2 Aug 2026). But a 2026 "Digital Omnibus" simplification package — provisional
+political agreement on **7 May 2026** — would defer the stand-alone high-risk (Annex III) obligations to
+**2 December 2027**
 ([Council of the EU](https://www.consilium.europa.eu/en/press/press-releases/2026/05/07/artificial-intelligence-council-and-parliament-agree-to-simplify-and-streamline-rules/)).
-That agreement is provisional and **not yet in the Official Journal** — it takes legal effect only on
-formal adoption and publication — so treat all of these as ballpark and confirm against the current
-consolidated text before betting a roadmap on a specific day.
+That agreement is **not yet in the Official Journal**, so treat all of these as ballpark and confirm
+against the current consolidated text.
 
 ## Agents raise the bar over chatbots
 
@@ -125,37 +116,36 @@ the agent-defining risk, and why the concrete artifact behind it is a **tool-per
 tool, scoped to which credential, behind which approval gate, with logs proving the boundary held. The
 agentic threat surface adds memory poisoning, agent-to-agent trust abuse, and goal hijack on top of the
 familiar prompt-injection problem; red-team findings are best tagged to a shared taxonomy like
-**[MITRE ATLAS](https://atlas.mitre.org/)** so coverage is legible to auditors and customers.
+**[MITRE ATLAS](https://atlas.mitre.org/)** so coverage is legible to auditors.
 
 Agents also do not escape the regimes that already governed the process they automate. When an agent
 touches personal data, money, health records, or cardholder data, it becomes just another in-scope system
 under **GDPR** (data-subject rights, automated-decision limits, a 72-hour breach clock, fines to €20M / 4%
-— [Regulation (EU) 2016/679](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng), Arts. 33 & 83), SOC 2, HIPAA, PCI DSS, or banking model-risk
-guidance. The agent does not get a regulatory exemption for being new; it inherits the obligations of the
-job it was given.
+— [Regulation (EU) 2016/679](https://eur-lex.europa.eu/eli/reg/2016/679/oj/eng), Arts. 33 & 83), SOC 2,
+HIPAA, PCI DSS, or banking model-risk guidance. The agent inherits the obligations of the job it was
+given.
 
 ## "In control" is a set of artifacts you can produce
 
 "We were in control" is worth only what you can show. In an audit the asymmetry is unforgiving: **a
-control you cannot evidence did not, for the record, exist.** Concretely, being in control means being
-able to produce, on demand, a small set of artifacts — the system's technical documentation; automatic
-run logs (the EU AI Act requires retention for a period appropriate to use and **at least six months**);
-the dated risk assessment and its sign-off; evaluation and red-team results; and a version history pinning
-each production decision to a reproducible model-and-prompt config
-([Regulation (EU) 2024/1689](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng), Arts. 11–12). The
-discipline that makes this survivable is simple to state and hard to retrofit: **generate the evidence as
-a by-product of running the agent, not as a project after it fails.**
+control you cannot evidence did not, for the record, exist.** Being in control means being able to
+produce, on demand: the system's technical documentation; automatic run logs (the EU AI Act requires
+retention for a period appropriate to use and **at least six months**); the dated risk assessment and its
+sign-off; evaluation and red-team results; and a version history pinning each production decision to a
+reproducible model-and-prompt config
+([Regulation (EU) 2024/1689](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng), Arts. 11–12). Simple to
+state, hard to retrofit: **generate the evidence as a by-product of running the agent, not as a project
+after it fails.**
 
 ## Going deeper
 
 This page is the landscape; three deep-dives walk the hardest ground:
 
-- **[The EU AI Act for agentic systems](eu-ai-act.md)** works tier by tier through the law — the high-risk
-  obligation set, the phased (and shifting) timeline, the penalties, and what an operator must actually
-  produce.
-- **[NIST AI RMF as an operating model](nist-ai-rmf.md)** turns governance from a document into a running
-  loop — Govern, Map, Measure, Manage — with the Generative AI Profile for LLM and agent specifics.
-- **[Audit evidence — proving you were in control](audit-evidence.md)** is the artifact-by-artifact kit:
+- **[The EU AI Act for agentic systems](eu-ai-act.md)** tier by tier through the law — the high-risk
+  obligation set, the phased timeline, penalties, and what an operator must actually produce.
+- **[NIST AI RMF as an operating model](nist-ai-rmf.md)** governance as a running loop — Govern, Map,
+  Measure, Manage — with the Generative AI Profile for LLM and agent specifics.
+- **[Audit evidence — proving you were in control](audit-evidence.md)** the artifact-by-artifact kit —
   what to keep, anchored to which obligation, and for how long.
 
 When you reach sign-off, the [go-live checklist](../../checklists/compliance-and-governance.md) makes each

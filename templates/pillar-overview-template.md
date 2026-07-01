@@ -42,7 +42,7 @@ production, and — in a sentence — what this page covers so it reads as self-
 
 ---
 
-## Why this is the pillar that gets tested
+## Where this breaks in production
 
 <The failure story: what goes wrong in production when this infrastructure is absent or weak, ideally
 through a named case study or two. Sourced. The motivation the rest of the chapter answers.>
@@ -82,7 +82,7 @@ or earlier in the prose. No status column.>
 ```
 
 The fixed order is:
-**H1 + tagline → callout → lead → `---` → `## Why this is the pillar that gets tested` → one or more
+**H1 + tagline → callout → lead → `---` → `## Where this breaks in production` → one or more
 real core-concept sections → `## Going deeper` (links every deep-dive + connects outward) → `---` →
 `## Sources` → `## Read more` *(optional)* → `<!-- page-type: overview -->`.** Section *titles* are yours
 to choose — write the ones the topic needs; the spine above is the rhythm, not a fill-in form.
