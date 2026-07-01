@@ -289,12 +289,17 @@ def _is_table_separator(line: str) -> bool:
 
 
 def _check_checklist(page: P.ParsedPage) -> list[Finding]:
-    """A ``checklist`` page should carry ``- [ ]`` checkbox lines — that is the point of it."""
+    """A ``checklist`` page must carry checkboxes — either ``- [ ]`` bullet lines or a table
+    whose rows carry a ``☐``/``☑`` (or ``[ ]``) checkbox cell. That is the point of it."""
     if _base_type(page) != "checklist":
         return []
-    if not any(re.match(r"\s*[-*]\s+\[[ xX]\]", l) for l in page.lines):
+    has_bullet_box = any(re.match(r"\s*[-*]\s+\[[ xX]\]", l) for l in page.lines)
+    has_table_box = any(_is_table_separator(l) for l in page.lines) and any(
+        "|" in l and re.search(r"[☐☑]|\[[ xX]\]", l) for l in page.lines
+    )
+    if not (has_bullet_box or has_table_box):
         return [Finding(page.rel, -1, WARNING, "checklist-no-boxes",
-                        "checklist page has no `- [ ]` checkbox lines")]
+                        "checklist page has no checkbox lines (`- [ ]` bullets or a ☐ table)")]
     return []
 
 

@@ -161,10 +161,34 @@ def test_checklist_with_boxes_is_clean(tmp_path):
     assert "checklist-no-boxes" not in codes(V.verify_page(p, tmp_path))
 
 
+def test_checklist_with_checkbox_table_is_clean(tmp_path):
+    # A checklist expressed as a ☐ table (no `- [ ]` bullets) must also pass.
+    (tmp_path / "docs").mkdir()
+    p = tmp_path / "docs" / "cl.md"
+    p.write_text("# CL\n\n## Items\n\n"
+                 "| Done | Control | Pass criterion / metric | Source |\n"
+                 "|------|---------|-------------------------|--------|\n"
+                 "| ☐ | Token ceiling | Cost cap configured; run aborts on breach | [s](https://e.org) |\n\n"
+                 "## Sources\n- **[s](https://e.org)** (O) — y.\n\n<!-- page-type: checklist -->\n",
+                 encoding="utf-8")
+    assert "checklist-no-boxes" not in codes(V.verify_page(p, tmp_path))
+
+
 def test_checklist_without_boxes_is_warning(tmp_path):
     (tmp_path / "docs").mkdir()
     p = tmp_path / "docs" / "cl.md"
     p.write_text("# CL\n\n## Items\n\nJust prose, no boxes.\n\n"
+                 "## Sources\n- **[s](https://e.org)** (O) — y.\n\n<!-- page-type: checklist -->\n",
+                 encoding="utf-8")
+    assert "checklist-no-boxes" in codes(V.verify_page(p, tmp_path), V.WARNING)
+
+
+def test_checklist_plain_table_without_checkbox_is_warning(tmp_path):
+    # A table with no ☐/[ ] cell is not a checklist — still warns.
+    (tmp_path / "docs").mkdir()
+    p = tmp_path / "docs" / "cl.md"
+    p.write_text("# CL\n\n## Items\n\n"
+                 "| Control | Metric |\n| --- | --- |\n| Token ceiling | cap set |\n\n"
                  "## Sources\n- **[s](https://e.org)** (O) — y.\n\n<!-- page-type: checklist -->\n",
                  encoding="utf-8")
     assert "checklist-no-boxes" in codes(V.verify_page(p, tmp_path), V.WARNING)

@@ -13,63 +13,77 @@ that runs until someone notices. For the why behind each theme, see the
 
 ## Approval gates (gate the irreversible)
 
-- [ ] Every tool is **risk-rated** (read/write, reversibility, permissions, financial impact) and the rating drives whether it is gated. ([HITL approval gates](../docs/human-control-and-rollback/hitl-approval-gates.md))
-- [ ] Irreversible, money-moving, record-mutating, and external-send actions **require human approval before the side effect**, not after.
-- [ ] The gate is **enforced in code / the downstream system**, not a "please ask first" instruction in the prompt.
-- [ ] New mutating tools default to **approval-required**, and graduate to autonomous only on evidence.
+| Done | Control | Pass criterion / metric | Source |
+|------|---------|-------------------------|--------|
+| ☐ | Risk-rate every tool | Each tool rated (read/write, reversibility, permissions, financial impact); the rating drives whether it is gated | [HITL approval gates](../docs/human-control-and-rollback/hitl-approval-gates.md); [OpenAI — practical guide](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf) |
+| ☐ | Approve before side effect | Irreversible/money-moving/record-mutating/external-send actions require human approval before the side effect, not after | [HITL approval gates](../docs/human-control-and-rollback/hitl-approval-gates.md); [OWASP LLM06](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/) |
+| ☐ | Gate enforced in code | Gate enforced in code / the downstream system, not a "please ask first" instruction in the prompt | [HITL approval gates](../docs/human-control-and-rollback/hitl-approval-gates.md); [OWASP LLM06](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/) |
+| ☐ | New tools approval-required | New mutating tools default approval-required, and graduate to autonomous only on evidence | [HITL approval gates](../docs/human-control-and-rollback/hitl-approval-gates.md) |
 
 ## Gate quality (against automation bias)
 
-- [ ] The gate presents a **dry-run diff** of the exact effect (rows, recipients, amounts, commands) — not a paraphrase of intent.
-- [ ] **Refusal is as easy as approval** — no default-yes, no pre-checked box, no buried reject.
-- [ ] The decision is routed to **someone who can evaluate it at the rate it arrives**; a gate firing hundreds of times an hour is mis-scoped.
-- [ ] The **approver, the evidence shown, and the decision are recorded**, per the human-oversight obligation. ([EU AI Act Art. 14](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng))
+| Done | Control | Pass criterion / metric | Source |
+|------|---------|-------------------------|--------|
+| ☐ | Show dry-run diff | Gate presents the exact effect (rows, recipients, amounts, commands), not a paraphrase of intent | [HITL approval gates](../docs/human-control-and-rollback/hitl-approval-gates.md) |
+| ☐ | Refusal as easy as approval | No default-yes, no pre-checked box, no buried reject | [HITL approval gates](../docs/human-control-and-rollback/hitl-approval-gates.md); [EU AI Act Art. 14](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng) |
+| ☐ | Route at reviewable rate | Decision routed to someone who can evaluate it at the rate it arrives; a gate firing hundreds/hour is mis-scoped | [HITL approval gates](../docs/human-control-and-rollback/hitl-approval-gates.md) |
+| ☐ | Record the decision | Approver, evidence shown, and decision recorded, per the human-oversight obligation | [HITL approval gates](../docs/human-control-and-rollback/hitl-approval-gates.md); [EU AI Act Art. 14](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng) |
 
 ## Staged rollout
 
-- [ ] Agent behaviour changes (prompt / model / tool / policy) ship **behind a feature flag** that separates *deployed* from *active*.
-- [ ] A new version runs in **shadow** (mirrored traffic, serving nothing) before any user sees it.
-- [ ] A **canary** serves a small slice (e.g. ~5%) and is compared **against a control by population**, not just aggregate. ([Google SRE — canarying](https://sre.google/workbook/canarying-releases/))
-- [ ] **Automated good/bad gates** on error/refusal rate, tool-call distribution, latency, cost/request, and a quality signal advance or halt the rollout.
-- [ ] Flag evaluation is **locked to the session**, so a conversation does not flip versions mid-stream.
+| Done | Control | Pass criterion / metric | Source |
+|------|---------|-------------------------|--------|
+| ☐ | Deploy behind feature flag | Behaviour changes (prompt/model/tool/policy) ship behind a flag that separates *deployed* from *active* | — |
+| ☐ | Shadow before serving | A new version runs in shadow (mirrored traffic, serving nothing) before any user sees it | — |
+| ☐ | Canary vs control | A canary serves a small slice (e.g. ~5%), compared against a control by population, not just aggregate | [Google SRE — canarying](https://sre.google/workbook/canarying-releases/) |
+| ☐ | Automated good/bad gates | Gates on error/refusal rate, tool-call distribution, latency, cost/request, and a quality signal advance or halt the rollout | [Google SRE — canarying](https://sre.google/workbook/canarying-releases/) |
+| ☐ | Session-locked flag | Flag evaluation locked to the session, so a conversation doesn't flip versions mid-stream | — |
 
 ## Kill switch
 
-- [ ] A **real stop control** halts the agent **regardless of the model's cooperation** — a flag/gateway outside the agent's loop, not a prompt. ([Kill switch & rollback](../docs/human-control-and-rollback/kill-switch-and-rollback.md))
-- [ ] The kill switch flips to a **safe fallback** (deterministic path / unavailable state), not a crash.
-- [ ] A **named owner** can trip it, with a **documented trigger** for when they must. ([NYC MyCity](../docs/case-studies/nyc-mycity-chatbot.md))
+| Done | Control | Pass criterion / metric | Source |
+|------|---------|-------------------------|--------|
+| ☐ | Real stop control | Halts the agent regardless of the model's cooperation — a flag/gateway outside the loop, not a prompt | [Kill switch & rollback](../docs/human-control-and-rollback/kill-switch-and-rollback.md); [EU AI Act Art. 14](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng) |
+| ☐ | Flip to safe fallback | Kill switch flips to a deterministic path / unavailable state, not a crash | [Kill switch & rollback](../docs/human-control-and-rollback/kill-switch-and-rollback.md) |
+| ☐ | Named owner + trigger | A named owner can trip it, with a documented trigger for when they must | [Kill switch & rollback](../docs/human-control-and-rollback/kill-switch-and-rollback.md); [NYC MyCity](../docs/case-studies/nyc-mycity-chatbot.md) |
 
 ## Versioning & rollback
 
-- [ ] **All four behaviour layers** — model, prompt, tools+scopes, policy/config — are pinned and versioned **as one bundle** with immutable IDs.
-- [ ] The **model version is pinned**, not left to silent provider updates.
-- [ ] **Rollback is a repoint** to the last-good bundle, and the path has been **tested before go-live**, not discovered during an incident.
-- [ ] **Config rollback ≠ data rollback** — there is a plan to reverse (or a written, accepted record that you *cannot* reverse) the **data the agent mutated**, distinct from repointing the behaviour bundle. ([Kill switch & rollback](../docs/human-control-and-rollback/kill-switch-and-rollback.md))
-- [ ] A failed eval/canary gate **automatically reverts** to the last-stable bundle, rather than waiting for a human to notice. ([Kill switch & rollback](../docs/human-control-and-rollback/kill-switch-and-rollback.md))
-- [ ] Recovery to a known-good state is **verifiable by the human**, not asserted by the agent. ([Replit incident](../docs/case-studies/replit-database-deletion.md))
+| Done | Control | Pass criterion / metric | Source |
+|------|---------|-------------------------|--------|
+| ☐ | Version all four layers | Model, prompt, tools+scopes, policy/config pinned + versioned as one bundle with immutable IDs | [Kill switch & rollback](../docs/human-control-and-rollback/kill-switch-and-rollback.md); [EU AI Act Arts. 11–12](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng) |
+| ☐ | Pin the model version | Model version pinned, not left to silent provider updates | [Kill switch & rollback](../docs/human-control-and-rollback/kill-switch-and-rollback.md) |
+| ☐ | Test rollback pre-go-live | Rollback is a repoint to the last-good bundle, and the path is tested before go-live, not discovered during an incident | [Kill switch & rollback](../docs/human-control-and-rollback/kill-switch-and-rollback.md) |
+| ☐ | Config ≠ data rollback | A plan to reverse (or a written, accepted record you *cannot* reverse) the data the agent mutated, distinct from repointing the bundle | [Kill switch & rollback](../docs/human-control-and-rollback/kill-switch-and-rollback.md) |
+| ☐ | Auto-revert on failed gate | A failed eval/canary gate automatically reverts to the last-stable bundle, rather than waiting for a human to notice | [Kill switch & rollback](../docs/human-control-and-rollback/kill-switch-and-rollback.md); [Google SRE — canarying](https://sre.google/workbook/canarying-releases/) |
+| ☐ | Human-verifiable recovery | Recovery to a known-good state is verifiable by the human, not asserted by the agent | [Kill switch & rollback](../docs/human-control-and-rollback/kill-switch-and-rollback.md); [Replit incident](../docs/case-studies/replit-database-deletion.md) |
 
 ## Separation of environments
 
-- [ ] **Dev/prod separation** keeps the agent off production data by default; reaching production requires an explicit, gated promotion. ([Replit incident](../docs/case-studies/replit-database-deletion.md))
+| Done | Control | Pass criterion / metric | Source |
+|------|---------|-------------------------|--------|
+| ☐ | Dev/prod separation | Agent off production data by default; reaching production requires an explicit, gated promotion | [Replit incident](../docs/case-studies/replit-database-deletion.md) |
 
 ## Incident response (after the gate trips, the kill switch fires, the canary regresses)
 
-- [ ] A **written runbook** exists with pre-assigned roles, and a **named on-call** is paged on the documented trigger — response does not run on improvisation. ([Incident response & runbooks](../docs/human-control-and-rollback/incident-response-and-runbooks.md))
-- [ ] Triage is **halt-first, diagnose-second** — a still-acting agent is tripped to the safe fallback before root-cause analysis begins. ([Incident response & runbooks](../docs/human-control-and-rollback/incident-response-and-runbooks.md))
-- [ ] A **roll-back-vs-forward-fix rule** is written down: roll back the behaviour by default; forward-fix only the data damage a config repoint cannot un-mutate. ([Incident response & runbooks](../docs/human-control-and-rollback/incident-response-and-runbooks.md))
-- [ ] **Affected users are told** — what the agent did, who was hit, what you did to stop and reverse it, and what they should do now — through a single owned channel, not ad hoc. ([Incident response & runbooks](../docs/human-control-and-rollback/incident-response-and-runbooks.md))
-- [ ] A **blameless post-incident review** runs and produces two durable artifacts: a new **eval/regression case** for the input that broke, and a re-scored **risk-register row** with the added control. ([Incident response & runbooks](../docs/human-control-and-rollback/incident-response-and-runbooks.md))
+| Done | Control | Pass criterion / metric | Source |
+|------|---------|-------------------------|--------|
+| ☐ | Written runbook + on-call | Runbook with pre-assigned roles; a named on-call paged on the documented trigger — response doesn't run on improvisation | [Incident response & runbooks](../docs/human-control-and-rollback/incident-response-and-runbooks.md); [Google SRE — Incident Response](https://sre.google/workbook/incident-response/) |
+| ☐ | Halt-first, diagnose-second | A still-acting agent is tripped to the safe fallback before root-cause analysis begins | [Incident response & runbooks](../docs/human-control-and-rollback/incident-response-and-runbooks.md); [Google SRE — Incident Response](https://sre.google/workbook/incident-response/) |
+| ☐ | Rollback-vs-forward rule | Written rule: roll back behaviour by default; forward-fix only the data damage a config repoint can't un-mutate | [Incident response & runbooks](../docs/human-control-and-rollback/incident-response-and-runbooks.md) |
+| ☐ | Tell affected users | What the agent did, who was hit, how you stopped/reversed it, and what they should do now — via a single owned channel | [Incident response & runbooks](../docs/human-control-and-rollback/incident-response-and-runbooks.md); [Google SRE — Incident Response](https://sre.google/workbook/incident-response/) |
+| ☐ | Blameless post-incident review | Produces two durable artifacts: a new eval/regression case for the input that broke, and a re-scored risk-register row with the added control | [Incident response & runbooks](../docs/human-control-and-rollback/incident-response-and-runbooks.md); [Postmortem Culture](https://sre.google/sre-book/postmortem-culture/); [NIST AI RMF](https://www.nist.gov/itl/ai-risk-management-framework) |
 
 ---
 
 ## Sources
 
-- **[Regulation (EU) 2024/1689 (EU AI Act)](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng)** (EUR-Lex / Official Journal) — Art. 14 human oversight (interrupt via a "stop" button, awareness of automation bias) and Arts. 11–12 logging/version history, behind the gate-quality, kill-switch, and versioning lines.
-- **[OWASP LLM06: Excessive Agency](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/)** (OWASP GenAI) — "require a human to approve high-impact actions" and *complete mediation*, behind the approval-gate lines.
-- **[A practical guide to building agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)** (OpenAI) — tool risk-rating (read/write, reversibility, permissions, financial impact) behind the first approval-gate line.
-- **[Canarying Releases](https://sre.google/workbook/canarying-releases/)** (Google SRE) — canary-vs-control, per-population comparison, gate-on-metrics, and gate-triggered automated revert behind the staged-rollout and auto-revert lines.
-- **[Incident Response](https://sre.google/workbook/incident-response/)** (Google SRE Workbook) — pre-assigned roles, halt-/mitigate-first triage, and centralised stakeholder communication behind the incident-response lines.
-- **[Postmortem Culture: Learning from Failure](https://sre.google/sre-book/postmortem-culture/)** (Google SRE) — the blameless-postmortem definition and principle behind the post-incident-review line.
-- **[AI Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/itl/ai-risk-management-framework)** (NIST) — the *Manage* function (respond, recover, feed lessons back) behind the eval-case-plus-risk-register output of the review line.
+- **[Regulation (EU) 2024/1689 (EU AI Act)](https://eur-lex.europa.eu/eli/reg/2024/1689/oj/eng)** (EUR-Lex / Official Journal) — Art. 14 human oversight (interrupt via a "stop" button, awareness of automation bias) and Arts. 11–12 logging/version history, behind the gate-quality, kill-switch, and versioning rows.
+- **[OWASP LLM06: Excessive Agency](https://genai.owasp.org/llmrisk/llm062025-excessive-agency/)** (OWASP GenAI) — "require a human to approve high-impact actions" and *complete mediation*, behind the approval-gate rows.
+- **[A practical guide to building agents](https://cdn.openai.com/business-guides-and-resources/a-practical-guide-to-building-agents.pdf)** (OpenAI) — tool risk-rating (read/write, reversibility, permissions, financial impact) behind the first approval-gate row.
+- **[Canarying Releases](https://sre.google/workbook/canarying-releases/)** (Google SRE) — canary-vs-control, per-population comparison, gate-on-metrics, and gate-triggered automated revert behind the staged-rollout and auto-revert rows.
+- **[Incident Response](https://sre.google/workbook/incident-response/)** (Google SRE Workbook) — pre-assigned roles, halt-/mitigate-first triage, and centralised stakeholder communication behind the incident-response rows.
+- **[Postmortem Culture: Learning from Failure](https://sre.google/sre-book/postmortem-culture/)** (Google SRE) — the blameless-postmortem definition and principle behind the post-incident-review row.
+- **[AI Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/itl/ai-risk-management-framework)** (NIST) — the *Manage* function (respond, recover, feed lessons back) behind the eval-case-plus-risk-register output of the review row.
 
 <!-- page-type: checklist -->
